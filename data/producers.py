@@ -12,6 +12,7 @@ class Producer(SqlAlchemyBase):
     name = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     logo = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    country = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     kits = orm.relation("Kit", back_populates='prod')
     books = orm.relation("Booklet", back_populates='prod')
 

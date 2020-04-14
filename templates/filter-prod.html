@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Наборы разных производителей</h1>
+<h1>{{prod.name}}</h1>
+<div class="col-md6 border rounded">
+    <div>
+        {{prod.about}}
+    </div>
+    <div>
+        <img src="/static/img/logo_prod/{{prod.logo}}" alt="здесь должна была быть картинка, но не нашлась" width=100>
+    </div>
+    <div>
+        Страна - {{prod.country}}
+    </div>
+</div>
+<h2>Наборы</h2>
 {% for item in kits%}
 <div class="col-md6 border rounded">
     <h2>{{item.name}}</h2>
@@ -10,9 +22,6 @@
     </div>
     <div>
         <img src="/static/img/kits/{{item.pic}}" alt="здесь должна была быть картинка, но не нашлась" width=300>
-    </div>
-    <div>
-        Производитель - <a href="/filter-prod/{{item.prod.id}}">{{item.prod.name}}</a>
     </div>
 </div>
 {% endfor %}
