@@ -12,7 +12,7 @@
         <img src={{item.pic}} alt="здесь должна была быть картинка, но не нашлась" width=300>
     </div>
     <div>
-        Производитель - {{item.prod.name}}
+        Производитель - <a href="/filter-prod/{{item.prod.id}}">{{item.prod.name}}</a>
     </div>
 </div>
 {% endfor %}

@@ -17,6 +17,11 @@
         <a class="navbar-brand" href="/booklets">Буклеты</a>
         <a class="navbar-brand" href="/producers">Производители</a>
         </p>
+        {% if current_user.is_authenticated %}
+            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        {% else %}
+            <a class="btn btn-success" href="/login">Редактировать</a>
+        {% endif %}
     </nav>
 </header>
 <!-- Begin page content -->

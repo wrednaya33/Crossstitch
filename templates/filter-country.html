@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Производители {{country}}</h1>
+{% for item in producers%}
+<div class="col-md6 border rounded">
+    <h2><a href="/filter-prod/{{item.id}}">{{item.name}}</a></h2>
+    <div>
+        {{item.about}}
+    </div>
+    <div>
+        <img src="/static/img/logo_prod/{{item.logo}}" alt="здесь должна была быть картинка, но не нашлась" width=100>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

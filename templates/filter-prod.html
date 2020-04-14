@@ -10,11 +10,23 @@
         <img src="/static/img/logo_prod/{{prod.logo}}" alt="здесь должна была быть картинка, но не нашлась" width=100>
     </div>
     <div>
-        Страна - {{prod.country}}
+        Страна - <a href="/filter-country/{{prod.country}}">{{prod.country}}</a>
     </div>
 </div>
 <h2>Наборы</h2>
 {% for item in kits%}
+<div class="col-md6 border rounded">
+    <h2>{{item.name}}</h2>
+    <div>
+        {{item.about}}
+    </div>
+    <div>
+        <img src="/static/img/kits/{{item.pic}}" alt="здесь должна была быть картинка, но не нашлась" width=300>
+    </div>
+</div>
+{% endfor %}
+<h2>Буклеты</h2>
+{% for item in books%}
 <div class="col-md6 border rounded">
     <h2>{{item.name}}</h2>
     <div>
