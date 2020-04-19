@@ -1,5 +1,3 @@
-from data.producers import Producer
-from data.kits import Kit
 from data import db_session
 from data.admins import Admin
 
