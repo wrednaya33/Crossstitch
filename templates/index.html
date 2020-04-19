@@ -15,5 +15,14 @@
         Производитель - <a href="/filter-prod/{{item.prod.id}}">{{item.prod.name}}</a>
     </div>
 </div>
+{% if current_user.is_authenticated %}
+    <div>
+        <a href="/add-kit/{{ item.id }}" class="btn btn-warning">Изменить</a>
+        <a href="/delete-kit/{{ item.id }}" class="btn btn-danger">Удалить</a>
+    </div>
+{% endif %}
 {% endfor %}
+{% if current_user.is_authenticated %}
+        <a href="add-kit" class="btn btn-secondary">Добавить</a>
+{% endif %}
 {% endblock %}

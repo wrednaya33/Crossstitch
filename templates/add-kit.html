@@ -1,41 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Добавление производителя</h1>
+<h1>Добавление набора</h1>
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
     <p>
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}<br>
-        {% for error in form.title.errors %}
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
             </p>
         {% endfor %}
     </p>
     <p>
-        {{ form.content.label }}<br>
-        {{ form.content(class="form-control") }}<br>
-        {% for error in form.content.errors %}
+        {{ form.about.label }}<br>
+        {{ form.about(class="form-control") }}<br>
+        {% for error in form.about.errors %}
             <p content="alert alert-danger" role="alert">
                 {{ error }}
             </p>
         {% endfor %}
     </p>
     <p>
-        {{ form.country.label }}<br>
-        {{ form.country(class="form-control") }}<br>
-        {% for error in form.country.errors %}
+        {{ form.prod.label }}<br>
+        {{ form.prod(class="dropdown") }}<br>
+        {% for error in form.prod.errors %}
             <p content="alert alert-danger" role="alert">
                 {{ error }}
             </p>
         {% endfor %}
     </p>
     {% if image != "" %}
-        <img src="/static/img/logo_prod/{{image}}" alt="здесь должна была быть картинка, но не нашлась" width=100>
+        <img src="/static/img/kits/{{image}}" alt="здесь должна была быть картинка, но не нашлась" width=100>
     {% endif %}
-    <p>{{ form.logo(class="btn btn-secondary") }} </p>
+    <p>{{ form.pic(class="btn btn-secondary") }} </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
 </form>

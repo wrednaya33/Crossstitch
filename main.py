@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, abort
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileField
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 from data import db_session
@@ -153,6 +153,163 @@ def producer_delete(id):
         abort(404)
     return redirect('/producers')
 
+@app.route('/add-kit', methods=['GET', 'POST'])
+@login_required
+def add_kit():
+    form = KitForm()
+    session = db_session.create_session()
+    prods = session.query(Producer).order_by('name').all()
+    if prods:
+        form.prod.choices = [(g.id, g.name) for g in prods]
+    else:
+        abort(404)
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        kit = Kit()
+        kit.name = form.name.data
+        kit.about = form.about.data
+        kit.prod_id = form.prod.data
+        if form.pic.data is None:
+            kit.pic = 'empty.png'
+        else:
+            kit.pic = secure_filename(form.pic.data.filename)
+            form.pic.data.save(os.path.join('static/img/kits/', kit.pic))
+        session.add(kit)
+        session.commit()
+        return redirect('/')
+    return render_template('add-kit.html', title='Добавление набора',
+                           form=form, image='')
+
+@app.route('/add-kit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_kit(id):
+    form = KitForm()
+    session = db_session.create_session()
+    prods = session.query(Producer).order_by('name').all()
+    if prods:
+        form.prod.choices = [(g.id, g.name) for g in prods]
+    else:
+        abort(404)
+    global filename
+    if request.method == "GET":
+        session = db_session.create_session()
+        kit = session.query(Kit).filter(Kit.id == id).first()
+        if kit:
+            form.name.data = kit.name
+            form.about.data = kit.about
+            form.prod.data = kit.prod_id
+            filename = kit.pic
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        kit = session.query(Kit).filter(Kit.id == id).first()
+        if kit:
+            kit.name = form.name.data
+            kit.about = form.about.data
+            kit.prod_id = form.prod.data
+            if form.pic.data is None:
+                kit.pic = filename
+            else:
+                kit.pic = secure_filename(form.pic.data.filename)
+                form.pic.data.save(os.path.join('static/img/kits/', kit.pic))
+            session.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    return render_template('add-kit.html', title='Редактирование набора', form=form, image=filename)
+
+
+@app.route('/delete-kit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def kit_delete(id):
+    session = db_session.create_session()
+    kit = session.query(Kit).filter(Kit.id == id).first()
+    if kit:
+        session.delete(kit)
+        session.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+@app.route('/add-booklet', methods=['GET', 'POST'])
+@login_required
+def add_booklet():
+    form = KitForm()
+    session = db_session.create_session()
+    prods = session.query(Producer).order_by('name').all()
+    if prods:
+        form.prod.choices = [(g.id, g.name) for g in prods]
+    else:
+        abort(404)
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        book = Booklet()
+        book.name = form.name.data
+        book.about = form.about.data
+        book.prod_id = form.prod.data
+        if form.pic.data is None:
+            book.pic = 'empty.png'
+        else:
+            book.pic = secure_filename(form.pic.data.filename)
+            form.pic.data.save(os.path.join('static/img/booklets/', book.pic))
+        session.add(book)
+        session.commit()
+        return redirect('/booklets')
+    return render_template('add-booklet.html', title='Добавление буклета',
+                           form=form, image='')
+
+@app.route('/add-booklet/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_booklet(id):
+    form = KitForm()
+    session = db_session.create_session()
+    prods = session.query(Producer).order_by('name').all()
+    if prods:
+        form.prod.choices = [(g.id, g.name) for g in prods]
+    else:
+        abort(404)
+    global filename
+    if request.method == "GET":
+        session = db_session.create_session()
+        book = session.query(Booklet).filter(Booklet.id == id).first()
+        if book:
+            form.name.data = book.name
+            form.about.data = book.about
+            form.prod.data = book.prod_id
+            filename = book.pic
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        book = session.query(Booklet).filter(Booklet.id == id).first()
+        if book:
+            book.name = form.name.data
+            book.about = form.about.data
+            book.prod_id = form.prod.data
+            if form.pic.data is None:
+                book.pic = filename
+            else:
+                book.pic = secure_filename(form.pic.data.filename)
+                form.pic.data.save(os.path.join('static/img/booklets/', book.pic))
+            session.commit()
+            return redirect('/booklets')
+        else:
+            abort(404)
+    return render_template('add-booklet.html', title='Редактирование буклета', form=form, image=filename)
+
+
+@app.route('/delete-booklet/<int:id>', methods=['GET', 'POST'])
+@login_required
+def booklet_delete(id):
+    session = db_session.create_session()
+    book = session.query(Booklet).filter(Booklet.id == id).first()
+    if book:
+        session.delete(book)
+        session.commit()
+    else:
+        abort(404)
+    return redirect('/boolets')
 
 class ProducerForm(FlaskForm):
     title = StringField('Название', validators=[DataRequired()])
@@ -161,6 +318,12 @@ class ProducerForm(FlaskForm):
     logo = FileField('Логотип')
     submit = SubmitField('Применить')
 
+class KitForm(FlaskForm):
+    name = StringField('Название', validators=[DataRequired()])
+    about = TextAreaField("Описание", validators=[DataRequired()])
+    prod = SelectField('Производитель', validators=[DataRequired()], coerce=int)
+    pic = FileField('Изображение')
+    submit = SubmitField('Применить')
 
 class LoginForm(FlaskForm):
     name = StringField('Логин', validators=[DataRequired()])
