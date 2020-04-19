@@ -335,7 +335,7 @@ class LoginForm(FlaskForm):
 def main():
     db_session.global_init("db/CrossStitch.sqlite")
     # push.push_data()
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':
